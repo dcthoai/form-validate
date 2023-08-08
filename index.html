@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>From Sign Up</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 <label for="fullname" class="form-label">Tên đầy đủ</label>
-                <input id="fullname" name="fullname" type="text" placeholder="VD: Sơn Đặng" class="form-control">
+                <input id="fullname" name="fullname" type="text" placeholder="VD: Công Thoại" class="form-control">
                 <span class="form-message"></span>
             </div>
 
@@ -42,7 +42,7 @@
         </form>
     </div>
 
-    <script src="main.js"></script>
+    <script src="./assets/js/main.js"></script>
     <script>
         Validator({
             form: '#form-1',
@@ -58,7 +58,11 @@
                 Validator.isConfirmed('#form-1 #password_confirmation', function(){
                     return document.querySelector('#form-1 #password').value;
                 }, 'Mật khẩu nhập lại chưa chính xác.')
-            ]
+            ],
+            onSubmit: function(data){
+                // Call API
+                console.log(data);
+            }
         });
     </script>
 </body>
