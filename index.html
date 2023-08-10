@@ -46,9 +46,9 @@
     <script>
         Validator({
             form: '#form-1',
+            formInput: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                // Validator.isRequired('#fullname'),
                 Validator.isRequired('#fullname', 'Nhập tên đầy đủ của bạn'),
                 Validator.isRequired('#email'),
                 Validator.isEmail('#email', 'Nhập email của bạn'),

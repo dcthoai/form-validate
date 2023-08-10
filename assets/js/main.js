@@ -1,13 +1,21 @@
 
-
 const Validator = function(options){
     const formElement = document.querySelector(options.form);
     var selectorRules = [];
     var isValid;
 
+    function getParentElement(inputElement, formInput){
+        while(inputElement.parentElement){
+            if(inputElement.parentElement.matches(formInput))
+                return inputElement.parentElement;
+            inputElement = inputElement.parentElement;
+        }
+    }
+
     // Hàm xử lý bắt lỗi
     function validate(inputElement, rule){
-        const errorElement = inputElement.parentElement.querySelector('.form-message');
+        const inputParentElement = getParentElement(inputElement, options.formInput);
+        const errorElement = inputParentElement.querySelector(options.errorSelector);
         var rules = selectorRules[rule.selector];
         var messageError;
 
@@ -20,10 +28,10 @@ const Validator = function(options){
         // Hiển thị lỗi tương ứng tìm được ra HTML
         if(messageError){
             errorElement.innerText = messageError;
-            inputElement.parentElement.classList.add('invalid');
+            inputParentElement.classList.add('invalid');
         }else{
             errorElement.innerText = '';
-            inputElement.parentElement.classList.remove('invalid');
+            inputParentElement.classList.remove('invalid');
         }
 
         return !!messageError;
@@ -41,6 +49,12 @@ const Validator = function(options){
             if(inputElement){
                 inputElement.onblur = function(){
                     validate(inputElement, rule);
+                }
+                inputElement.oninput = function(){
+                    const inputParentElement = getParentElement(inputElement, options.formInput);
+                    const errorElement = inputParentElement.querySelector(options.errorSelector)
+                    errorElement.innerText = '';
+                    inputParentElement.classList.remove('invalid');
                 }
             }
         });
@@ -62,7 +76,8 @@ const Validator = function(options){
                 if(typeof options.onSubmit === 'function'){
                     var elementInputs = formElement.querySelectorAll('[name]');
                     var formValues = Array.from(elementInputs).reduce(function(values, input){
-                        return (values[input.name] = input.value) && values;
+                        values[input.name] = input.value;
+                        return values;
                     }, {});
 
                     options.onSubmit(formValues);
